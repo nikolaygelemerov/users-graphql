@@ -34,10 +34,12 @@ const RootQuery = new GraphQLObjectType({
     user: {
       type: UserType,
       args: { id: { type: GraphQLString } },
-      resolve(parentValue, args) {
-        return axios
-          .get(`http://localhost:3000/users/${args.id}`)
-          .then(response => response.data);
+      async resolve(parentValue, args) {
+        const response = await axios.get(
+          `http://localhost:3000/users/${args.id}`
+        );
+
+        return response.data;
       }
     }
   }
