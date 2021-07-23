@@ -85,6 +85,45 @@ const mutation = new GraphQLObjectType({
           })
         ).data;
       }
+    },
+    deleteUser: {
+      type: UserType,
+      args: {
+        id: { type: new GraphQLNonNull(GraphQLString) }
+      },
+      async resolve(_, { id }) {
+        return (await axios.delete(`http://localhost:3000/users/${id}`)).data;
+      }
+    },
+    /*
+    mutation {
+      deleteUser(id: "23") {
+        id
+      }
+    }
+    */
+    editUser: {
+      type: UserType,
+      args: {
+        id: { type: new GraphQLNonNull(GraphQLString) },
+        firstName: { type: GraphQLString },
+        age: { type: GraphQLInt },
+        companyId: { type: GraphQLString }
+      },
+      async resolve(_, args) {
+        return (
+          await axios.patch(`http://localhost:3000/users/${args.id}`, args)
+        ).data;
+      }
+      /*
+      mutation {
+        editUser(id: "40", age: 10) {
+          id
+          firstName
+          age
+        }
+      }
+      */
     }
   }
 });
